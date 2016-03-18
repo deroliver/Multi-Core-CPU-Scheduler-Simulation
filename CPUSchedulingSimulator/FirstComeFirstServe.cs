@@ -20,13 +20,13 @@ namespace CPUSchedulingSimulator {
             }
 
             for(int i = 0; i < CPUS.Count; i++) {
-                if (CPUS[i] == null)
-                    CPUS[i] = getNextProcess();
+                if (CPUS[i].process == null)
+                    CPUS[i].process = getNextProcess();
             }
         }
 
         public override void addNewProcess() {
-            while(nextProcess < numberOfProcesses && processes[nextProcess].arrivalTime <= ticks) {
+            while(nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks) {
                 preReadyQueue.Add(processes[nextProcess++]);
             }
         }
@@ -52,16 +52,18 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         public override void moveFromRunningToWaiting() {
             for(int i = 0; i < CPUS.Count; i++) {
-                if(CPUS[i] != null) {
-                    if(CPUS[i].bursts[CPUS[i].currentBurst].step == CPUS[i].bursts[CPUS[i].currentBurst].length) {
-                        CPUS[i].currentBurst += 1;
-                        if(CPUS[i].currentBurst < CPUS[i].numBursts) {
-                            waitingQueue.Enqueue(CPUS[i]);
+                if(CPUS[i].process != null) {
+                    int burstStep = CPUS[i].process.bursts[CPUS[i].process.currentBurst].step;
+                    int burstLength = CPUS[i].process.bursts[CPUS[i].process.currentBurst].length;
+                    if (burstStep == burstLength) {
+                        CPUS[i].process.currentBurst += 1;
+                        if(CPUS[i].process.currentBurst < CPUS[i].process.numBursts) {
+                            waitingQueue.Enqueue(CPUS[i].process);
                         }
                         else {
-                            CPUS[i].endTime = ticks;
+                            CPUS[i].process.endTime = ticks;
                         }
-                        CPUS[i] = null;
+                        CPUS[i].process = null;
                     }
                 }
             }
@@ -106,8 +108,8 @@ namespace CPUSchedulingSimulator {
 
             // Update the running queue (CPUS)
             for(int i = 0; i < CPUS.Count; i++) {
-                if(CPUS[i] != null) {
-                    CPUS[i].bursts[CPUS[i].currentBurst].step += 1;
+                if(CPUS[i].process != null) {
+                    CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
                 }
             }
         }
@@ -127,7 +129,7 @@ namespace CPUSchedulingSimulator {
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
 
-            while(numberOfProcesses != 0) {
+            while(processes.Count != 0) {
                 addNewProcess();
                 moveFromRunningToWaiting();
                 moveFromReadyToRunning();
@@ -135,10 +137,10 @@ namespace CPUSchedulingSimulator {
 
                 updateProcessState();
 
-                cpuUtilizationTicks += runningProcesses();
+                cpuUtilizationTicks += numberOfCurrentRunningProcesses();
 
                 // If there are no more running processes and the waiting queue is empty, break
-                if (runningProcesses() == 0 && totalExpectedProcesses() == 0 && waitingQueue.Count == 0)
+                if (numberOfCurrentRunningProcesses() == 0 && totalExpectedProcesses() == 0 && waitingQueue.Count == 0)
                     break;
 
                 ticks += 1;

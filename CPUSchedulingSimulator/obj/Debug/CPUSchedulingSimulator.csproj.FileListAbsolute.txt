@@ -1,1 +1,2 @@
 C:\Users\Oliver\Desktop\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe.config
+C:\Users\doliver17\Desktop\Multi-Core-CPU-Scheduler-Simulation-master\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe.config

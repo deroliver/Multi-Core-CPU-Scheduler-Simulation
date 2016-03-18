@@ -11,18 +11,21 @@ namespace CPUSchedulingSimulator {
         protected List<Process> preReadyQueue;
         protected List<Process> processes;
 
+        protected int nextProcess;
+
         // CPUs
-        protected List<Process> CPUS;
+        protected List<Core> CPUS;
+        //protected List<Process> CPUS;
 
         public int ticks {
             get { return ticks; }
             set { ticks = value; }
         }
 
-        public int numberOfProcesses {
-            get { return numberOfProcesses; }
-        }
-        protected int nextProcess;
+        //public int numberOfProcesses {
+            //get { return numberOfProcesses; }
+       // }
+        
 
         // Queues for the ready and waiting processes
         protected Queue<Process> readyQueue {
@@ -41,7 +44,7 @@ namespace CPUSchedulingSimulator {
         public SchedulingAlgorithm() {
             processes = new List<Process>();
             preReadyQueue = new List<Process>();
-            CPUS = new List<Process>();
+            CPUS = new List<Core>();
         }
       
 
@@ -65,7 +68,7 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         /// <returns>The incoming processes</returns>
         protected int numberOfIncProcesses() {
-            return numberOfProcesses - nextProcess;
+            return processes.Count - nextProcess;
         }
 
         /// <summary>
@@ -105,9 +108,16 @@ namespace CPUSchedulingSimulator {
             return totalRunning;
         }
 
+        /// <summary>
+        /// Calculates how many processes we can expect
+        /// </summary>
+        /// <returns></returns>
         public int totalExpectedProcesses() {
-            return numberOfProcesses - nextProcess;
+            return processes.Count - nextProcess;
         }
+
+        public void loadProcesses(String filename) { }
+
 
         #endregion
     }
