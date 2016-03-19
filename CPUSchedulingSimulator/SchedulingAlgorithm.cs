@@ -31,33 +31,43 @@ namespace CPUSchedulingSimulator {
         protected Queue<Process> readyQueue {
             get { return readyQueue; }
         }
+
+        /// <summary>
+        /// Queue for processes that are waiting
+        /// </summary>
         protected Queue<Process> waitingQueue {
             get { return readyQueue; }
         }
         
+        /// <summary>
+        /// Keeps track of CPU utilization ticks
+        /// </summary>
         public int cpuUtilizationTicks {
             get { return cpuUtilizationTicks; }
             set { cpuUtilizationTicks = value; }
         }
 
-
+        /// <summary>
+        /// Simple constructor
+        /// Initializes member variables
+        /// </summary>
         public SchedulingAlgorithm() {
             processes = new List<Process>();
             preReadyQueue = new List<Process>();
             CPUS = new List<Core>();
         }
-      
 
-        /// <summary>
-        /// Gets the next process to be processed
-        /// </summary>
-        /// <returns></returns>
+        #region Abstract Methods
+
         public abstract Process getNextProcess();
         public abstract void addNewProcess();
         public abstract void moveFromWaitingToReady();
         public abstract void moveFromReadyToRunning();
         public abstract void moveFromRunningToWaiting();
         public abstract void updateProcessState();
+        public abstract void run(List<Core> CPUS);
+
+        #endregion
 
 
         #region Process Functions
@@ -116,6 +126,10 @@ namespace CPUSchedulingSimulator {
             return processes.Count - nextProcess;
         }
 
+        /// <summary>
+        /// Loads the processes from the created data file
+        /// </summary>
+        /// <param name="filename"></param>
         public void loadProcesses(String filename) { }
 
 

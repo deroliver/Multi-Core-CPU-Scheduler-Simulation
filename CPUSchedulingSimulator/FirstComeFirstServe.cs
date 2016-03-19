@@ -25,6 +25,9 @@ namespace CPUSchedulingSimulator {
             }
         }
 
+        /// <summary>
+        /// Simply adds a process to the preReady queue
+        /// </summary>
         public override void addNewProcess() {
             while(nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks) {
                 preReadyQueue.Add(processes[nextProcess++]);
@@ -32,7 +35,7 @@ namespace CPUSchedulingSimulator {
         }
 
         /// <summary>
-        /// Gets next process in th queue. Return the next process
+        /// Gets next process in the ready queue. Return the next process
         /// </summary>
         /// <returns></returns>
         public override Process getNextProcess() {
@@ -44,11 +47,13 @@ namespace CPUSchedulingSimulator {
         }
 
         /// <summary>
-        /// Checks if the current process has finished its CPU burst. Then move it to the
-        /// waitingQueue. If the process has finished its CPU burst, then terminate it.
-        /// Start the next I/O burst. If the process has not finished its CPU burst, move that
-        /// process to the waitingQueue and free the CPU it was using. If the current process 
-        /// has finished set the endTime to the current time, and terminate it.
+        /// Checks to see if any of the processes in the CPU cores have finished their
+        /// CPU burst. If they have, move it out of the CPU and start the IO burst.
+        /// 
+        /// If the CPU has not finished its CPU burst, then move it to the waitingQueue
+        /// and free the CPU it was using. 
+        /// 
+        /// If the process has completed, set its endTime, and terminate it.
         /// </summary>
         public override void moveFromRunningToWaiting() {
             for(int i = 0; i < CPUS.Count; i++) {
@@ -70,10 +75,9 @@ namespace CPUSchedulingSimulator {
         }
 
         /// <summary>
-        /// Grab the first process that is in the waiting queue and check if its
-        /// I/O burst is complete. Then move to the next I/O burst and and add 
-        /// to the preReadyQueue. Then remove the process from the waiting queue
-        /// and increment the burst's step.
+        /// Get the first process in the waiting queue and check if it has completed
+        /// its IO burst. If it has completed, move it to the preReadyQueue. And
+        /// remove it from the waitingQueue.
         /// </summary>
         public override void moveFromWaitingToReady() {
             for(int i = 0; i < waitingQueue.Count; i++) {
@@ -89,7 +93,7 @@ namespace CPUSchedulingSimulator {
         }
 
         /// <summary>
-        /// Updates waiting processes, ready processes, and running processes
+        /// Updates waiting processes (IO Burst), ready processes, and running processes (CPU Burst)
         /// </summary>
         public override void updateProcessState() {
             // Update the waiting queue
@@ -109,22 +113,27 @@ namespace CPUSchedulingSimulator {
             // Update the running queue (CPUS)
             for(int i = 0; i < CPUS.Count; i++) {
                 if(CPUS[i].process != null) {
-                    CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
+                    CPUS[i].update();
                 }
             }
         }
 
-        public void run() {
+        public override void run(List<Core> CPUS) {
             int status = 0;
+            this.CPUS = CPUS;
             
+            // Make sure the CPUs are empty
             for(int i = 0; i < CPUS.Count; i++) {
-                CPUS[i] = null;
+                CPUS[i].process = null;
             }
 
+            // Make sure the queues are empty
             readyQueue.Clear();
             waitingQueue.Clear();
+            preReadyQueue.Clear();
 
-            // Read in process data and add processes to process List
+            // Initialize processes
+            loadProcesses("Some File");
 
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
@@ -149,7 +158,5 @@ namespace CPUSchedulingSimulator {
 
             // Calculate data stuffs
         }
-
-        
     }
 }

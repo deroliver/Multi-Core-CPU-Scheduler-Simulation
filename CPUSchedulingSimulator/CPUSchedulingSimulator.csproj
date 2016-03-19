@@ -46,7 +46,6 @@
     <Compile Include="Core.cs" />
     <Compile Include="FirstComeFirstServe.cs" />
     <Compile Include="Process.cs" />
-    <Compile Include="ProcessScheduler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchedulingAlgorithm.cs" />
