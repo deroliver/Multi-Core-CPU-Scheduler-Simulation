@@ -6,3 +6,6 @@ C:\Users\Oliver\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUScheduli
 C:\Users\Oliver\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.pdb
 C:\Users\Oliver\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.exe
 C:\Users\Oliver\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.pdb
+C:\Users\Jose\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe.config
+C:\Users\Jose\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.exe
+C:\Users\Jose\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.pdb
