@@ -8,22 +8,27 @@ namespace CPUSchedulingSimulator
 {
     public class RoundRobin : SchedulingAlgorithm
     {
-        // Feel free to change it to something different
-        int timeQuantum = 10;
-
         public override void moveFromReadyToRunning()
         {
-            throw new NotImplementedException();
+
         }
 
         public override void addNewProcess()
         {
-            throw new NotImplementedException();
+            while (nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks)
+            {
+                preReadyQueue.Add(processes[nextProcess++]);
+            }
         }
 
         public override Process getNextProcess()
         {
-            throw new NotImplementedException();
+            if (readyQueue.Count == 0)
+            {
+                return null;
+            }
+            Process nextProcess = readyQueue.Dequeue();
+            return nextProcess;
         }
 
         public override void moveFromWaitingToReady()
