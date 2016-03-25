@@ -54,8 +54,8 @@ namespace CPUSchedulingSimulator {
             get { return priority; }
             set { priority = value; }
         }
-
-        private int quantumRemaining {
+        // Changed to public to access inside my Round Robin
+        public int quantumRemaining {
             get { return quantumRemaining; }
             set { quantumRemaining = value; }
         }
@@ -64,6 +64,7 @@ namespace CPUSchedulingSimulator {
             get { return currentQueue; }
             set { currentQueue = value; }
         }
+        
 
         #endregion
 

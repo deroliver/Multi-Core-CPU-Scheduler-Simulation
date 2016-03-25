@@ -22,6 +22,18 @@ namespace CPUSchedulingSimulator {
             set { ticks = value; }
         }
 
+        public int quantumtime
+        {
+            get { return quantumtime; }
+            set { quantumtime = value; }
+        }
+
+        public int contextSwitch
+        {
+            get { return contextSwitch; }
+            set { contextSwitch = value; }
+        }
+
         //public int numberOfProcesses {
             //get { return numberOfProcesses; }
        // }
