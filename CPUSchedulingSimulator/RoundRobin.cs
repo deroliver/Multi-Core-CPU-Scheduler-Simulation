@@ -88,6 +88,7 @@ namespace CPUSchedulingSimulator
             {
                 Process next_process = readyQueue.Dequeue();
                 next_process.bursts[next_process.currentBurst].step += 1;
+                next_process.waitingTime++;
                 readyQueue.Enqueue(next_process);
             }
 
@@ -102,7 +103,9 @@ namespace CPUSchedulingSimulator
             {
                 if (CPUS[i].process != null)
                 {
-                    CPUS[i].update();
+                    // CPUS[i].update();
+                    CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
+                    CPUS[i].process.quantumRemaining  -= 1;
                 }
             }
         }
@@ -142,7 +145,43 @@ namespace CPUSchedulingSimulator
 
         public override void run(List<Core> CPUS)
         {
-            throw new NotImplementedException();
+            int status = 0;
+            this.CPUS = CPUS;
+
+            // Make sure the CPUs are empty
+            for (int i = 0; i < CPUS.Count; i++)
+            {
+                CPUS[i].process = null;
+            }
+
+            // Make sure the queues are empty
+            readyQueue.Clear();
+            waitingQueue.Clear();
+            preReadyQueue.Clear();
+
+            // Initialize processes
+            loadProcesses("Some File");
+
+            // Sort the processes by arrival time
+            processes.Sort(arrivalTimeComparer);
+
+            while (processes.Count != 0)
+            {
+                addNewProcess();
+                moveFromRunningToWaiting();
+                moveFromReadyToRunning();
+                moveFromWaitingToReady();
+
+                updateProcessState();
+
+                cpuUtilizationTicks += numberOfCurrentRunningProcesses();
+
+                // If there are no more running processes and the waiting queue is empty, break
+                if (numberOfCurrentRunningProcesses() == 0 && totalExpectedProcesses() == 0 && waitingQueue.Count == 0)
+                    break;
+
+                ticks += 1;
+            }
         }
     }
 }
