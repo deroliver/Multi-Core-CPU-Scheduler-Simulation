@@ -25,8 +25,7 @@ namespace CPUSchedulingSimulator {
         /// The process being processed in the core
         /// </summary>
         public Process process {
-            get { return process; }
-            set { process = value; }
+            get; set;
         }
 
         /// <summary>

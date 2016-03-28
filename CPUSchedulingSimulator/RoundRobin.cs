@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CPUSchedulingSimulator
 {
+    /*
     public class RoundRobin : SchedulingAlgorithm
     {
         int contextswitch;
@@ -184,4 +185,5 @@ namespace CPUSchedulingSimulator
             }
         }
     }
+    */
 }

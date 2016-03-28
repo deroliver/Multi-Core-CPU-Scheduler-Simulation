@@ -107,6 +107,7 @@ namespace CPUSchedulingSimulator {
             for (int i = 0; i < readyQueue.Count; i++) {
                 Process nextProcess = readyQueue.Dequeue();
                 nextProcess.bursts[nextProcess.currentBurst].step += 1;
+                nextProcess.waitingTime++;
                 readyQueue.Enqueue(nextProcess);
             }
 
@@ -118,7 +119,7 @@ namespace CPUSchedulingSimulator {
             }
         }
 
-        public override void run(List<Core> CPUS) {
+        public override void run(List<Core> CPUS, string filename) {
             int status = 0;
             this.CPUS = CPUS;
             
@@ -132,8 +133,8 @@ namespace CPUSchedulingSimulator {
             waitingQueue.Clear();
             preReadyQueue.Clear();
 
-            // Initialize processes
-            loadProcesses("Some File");
+            // Load the processes
+            loadProcesses(filename);
 
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
@@ -155,6 +156,21 @@ namespace CPUSchedulingSimulator {
                 ticks += 1;
             }
 
+            int totalTurnaround = 0;
+            int totalWaitingtime = 0;
+            int lastPID = 0;
+
+            for(int i = 0; i < processes.Count; i++) {
+                totalTurnaround += processes[i].endTime - processes[i].arrivalTime;
+                totalWaitingtime += processes[i].waitingTime;
+
+                if (processes[i].endTime == ticks)
+                    lastPID = processes[i].processID;
+            }
+
+            Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
+            Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
+            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / processes.Count);
 
             // Calculate data stuffs
         }

@@ -21,10 +21,18 @@ unless(open FILE, '>'.$filename) {
 	die "\nUnable to open file\n";
 }
 
+$previousArrivalTime = 0;
+
 if($num_processes > 0 && $max_cpu_burst > 0 && $max_io_burst > 0) {
 	for($i = 0; $i < $num_processes; $i++) {
 		$line = "$process_id ";
 		$process_id += 1;
+
+		$arrivalTime = int(rand(10)) + 1;
+		$arrivalTime += $previousArrivalTime;
+		$previousArrivalTime = $arrivalTime;
+
+		$line .= "$arrivalTime ";
 
 		$num_bursts = int(rand(5)) + 1;
 

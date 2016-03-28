@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace CPUSchedulingSimulator {
     public class Process {
 
-        public Process(int processid, int numbursts, List<Burst> burst) {
+        public Process(int processid, int numbursts, int arrivaltime, List<Burst> burst) {
             processID = processid;
             bursts = burst;
+            arrivalTime = arrivaltime;
             numBursts = numbursts;
         }
 
