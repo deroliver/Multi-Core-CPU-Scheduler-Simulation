@@ -142,7 +142,43 @@ namespace CPUSchedulingSimulator {
         /// Loads the processes from the created data file
         /// </summary>
         /// <param name="filename"></param>
-        public void loadProcesses(String filename) { }
+        public void loadProcesses(String filename) { 
+            string line = "";
+            Process newProcess;
+
+            System.IO.StreamReader file = new System.IO.StreamReader(filename);
+
+            // Read in each line in the process data files
+            while((line = file.ReadLine()) != null) {
+                string[] subs = line.Split(null);
+                int processID = int.Parse(subs[0]);
+                int numBursts = int.Parse(subs[1]);
+
+                List<Process.Burst> bursts = new List<Process.Burst>();
+                Process.Burst newBurst;
+
+                // Create a Burst for every Burst in the line
+                for (int i = 2; i < numBursts + 2; i++) {
+                    newBurst = new Process.Burst(int.Parse(subs[i]), 0);
+                    bursts.Add(newBurst);
+                }
+
+                // Create the new process using the parsed variables and the 
+                // Burst list, then add the process to the Process list
+                newProcess = new Process(processID, numBursts, bursts);
+                processes.Add(newProcess);
+            }
+
+            file.Close();
+
+            for(int i = 0; i < processes.Count; i++) {
+                Console.Write("PID:" + processes[i].processID + " NumBursts: " + processes[i].numBursts);
+                for(int j = 0; j < processes[i].bursts.Count; j++) {
+                    Console.Write(" " + processes[i].bursts[j].length);
+                }
+                Console.Write("\n");
+            }
+        }
 
 
         #endregion

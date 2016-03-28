@@ -7,20 +7,27 @@ using System.Threading.Tasks;
 namespace CPUSchedulingSimulator {
     public class Process {
 
+        public Process(int processid, int numbursts, List<Burst> burst) {
+            processID = processid;
+            bursts = burst;
+            numBursts = numbursts;
+        }
+
+
         #region Non-Changeable Variables
 
         // Set in the Constructor
         // Cannot be set again
         public int processID {
-            get { return processID; }
+            get; set;
         }
 
         public int arrivalTime {
-            get { return arrivalTime; }
+            get; set;
         }
 
         public int numBursts {
-            get { return numBursts; }
+            get; set;
         }
 
         #endregion
@@ -71,6 +78,10 @@ namespace CPUSchedulingSimulator {
         public List<Burst> bursts;
 
         public class Burst {
+            public Burst(int length, int step) {
+                this.length = length;
+                this.step = step;
+            }
             public int length;
             public int step;
         }
