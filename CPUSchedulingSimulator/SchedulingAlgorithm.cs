@@ -141,7 +141,7 @@ namespace CPUSchedulingSimulator {
         /// <summary>
         /// Loads the processes from the created data file
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="filename">The filename</param>
         public void loadProcesses(String filename) { 
             string line = "";
             Process newProcess;

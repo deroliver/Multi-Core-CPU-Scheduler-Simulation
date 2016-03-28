@@ -15,16 +15,22 @@ $max_io_burst = $ARGV[2];
 
 $process_id = 0;
 
+my $filename = "processDataFile.txt";
+
+unless(open FILE, '>'.$filename) {
+	die "\nUnable to open file\n";
+}
+
 if($num_processes > 0 && $max_cpu_burst > 0 && $max_io_burst > 0) {
 	for($i = 0; $i < $num_processes; $i++) {
-		$line = "PID:$process_id ";
+		$line = "$process_id ";
 		$process_id += 1;
 
 		$num_bursts = int(rand(5)) + 1;
 
 		$total_bursts = 2 * $num_bursts;
 
-		$line .= "  #OfBursts:$total_bursts ";
+		$line .= "$total_bursts";
 
 		for($j = 0; $j < $num_bursts; $j++) {
 			$cpu_burst = int(rand($max_cpu_burst)) + 1;
@@ -33,10 +39,13 @@ if($num_processes > 0 && $max_cpu_burst > 0 && $max_io_burst > 0) {
 			$line .= "$io_burst";
 		}
 
-		print "$line\n";
+		print FILE "$line\r\n";
 	}
 } else {
 	print "Invalid arguments passed!\n";
+	close FILE;
 	exit;
 }
+
+close FILE;
 
