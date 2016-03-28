@@ -10,6 +10,8 @@ namespace CPUSchedulingSimulator {
         //protected Process[] processes;
         protected List<Process> preReadyQueue;
         protected List<Process> processes;
+        protected Queue<Process> readyQueue;
+        protected Queue<Process> waitingQueue;
 
         protected int nextProcess;
 
@@ -18,45 +20,29 @@ namespace CPUSchedulingSimulator {
         //protected List<Process> CPUS;
 
         public int ticks {
-            get { return ticks; }
-            set { ticks = value; }
+            get; set;
         }
 
         public int quantumtime
         {
-            get { return quantumtime; }
-            set { quantumtime = value; }
+            get; set;
         }
 
         public int contextSwitch
         {
-            get { return contextSwitch; }
-            set { contextSwitch = value; }
+            get; set;
         }
 
         //public int numberOfProcesses {
             //get { return numberOfProcesses; }
        // }
-        
-
-        // Queues for the ready and waiting processes
-        protected Queue<Process> readyQueue {
-            get { return readyQueue; }
-        }
-
-        /// <summary>
-        /// Queue for processes that are waiting
-        /// </summary>
-        protected Queue<Process> waitingQueue {
-            get { return readyQueue; }
-        }
+       
         
         /// <summary>
         /// Keeps track of CPU utilization ticks
         /// </summary>
         public int cpuUtilizationTicks {
-            get { return cpuUtilizationTicks; }
-            set { cpuUtilizationTicks = value; }
+            get; set;
         }
 
         /// <summary>
@@ -65,6 +51,8 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         public SchedulingAlgorithm() {
             processes = new List<Process>();
+            readyQueue = new Queue<Process>();
+            waitingQueue = new Queue<Process>();
             preReadyQueue = new List<Process>();
             CPUS = new List<Core>();
         }
@@ -171,14 +159,6 @@ namespace CPUSchedulingSimulator {
             }
 
             file.Close();
-
-            for(int i = 0; i < processes.Count; i++) {
-                Console.Write("PID:" + processes[i].processID + " NumBursts: " + processes[i].numBursts + " Arrival Time: " + processes[i].arrivalTime);
-                for(int j = 0; j < processes[i].bursts.Count; j++) {
-                    Console.Write(" " + processes[i].bursts[j].length);
-                }
-                Console.Write("\n");
-            }
         }
 
 

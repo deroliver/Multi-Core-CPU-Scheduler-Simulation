@@ -39,38 +39,31 @@ namespace CPUSchedulingSimulator {
         // Set in the Constructor
         // Can be set again
         public int startTime {
-            get { return startTime; }
-            set { startTime = value; }    
+            get; set;
         }
 
         public int endTime {
-            get { return endTime; }
-            set { endTime = value; }
+            get; set;
         }
 
         public int waitingTime {
-            get { return waitingTime; }
-            set { waitingTime = value; }
+            get; set;
         }
 
         public int currentBurst {
-            get { return currentBurst; }
-            set { waitingTime = value; }
+            get; set;
         }
     
         private int priority {
-            get { return priority; }
-            set { priority = value; }
+            get; set;
         }
         // Changed to public to access inside my Round Robin
         public int quantumRemaining {
-            get { return quantumRemaining; }
-            set { quantumRemaining = value; }
+            get; set;
         }
 
         private int currentQueue {
-            get { return currentQueue; }
-            set { currentQueue = value; }
+            get; set;
         }
         
 

@@ -170,7 +170,8 @@ namespace CPUSchedulingSimulator {
 
             Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
-            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / processes.Count);
+            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
+            //Console.WriteLine("Total Context Switches: " + cpuUtilizationTicks * 100 / ticks);
 
             // Calculate data stuffs
         }

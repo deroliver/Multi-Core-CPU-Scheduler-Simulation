@@ -15,18 +15,19 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         /// <param name="numCores">The number of cores to model</param>
         /// <param name="algorithm">Which algorithm to use</param>
-        public Simulator(int numCores, SchedulingAlgorithm algorithm) {
+        public Simulator(int numCores) {
+            CPUS = new List<Core>();
             for (int i = 0; i < numCores; i++)
                 CPUS.Add(new Core());
 
-            scheduler = algorithm;
+            scheduler = new FirstComeFirstServe();
         }
 
         /// <summary>
         /// Run method
         /// </summary>
         public void run() {
-
+            scheduler.run(CPUS, "processDataFile.txt");
         }
     }
 }
