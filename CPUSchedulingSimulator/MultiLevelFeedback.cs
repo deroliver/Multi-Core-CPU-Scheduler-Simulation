@@ -8,6 +8,7 @@ namespace CPUSchedulingSimulator
 {
     public class MultiLevelFeedBack : SchedulingAlgorithm
     {
+        List<Process> p = new List<Process>();
         public override void moveFromReadyToRunning()
         {
             preReadyQueue.Sort(processIDComparer);
@@ -166,6 +167,21 @@ namespace CPUSchedulingSimulator
                 }
                 Console.WriteLine("If statement broke, starting ticks");
                 ticks += 1;
+                
+                /// Created a foreach statement that removes each process, but when this is done
+                /// At the end it completely removes the processes, so there is a count of 0
+                /// Could use some tuning.
+                /// Might want to stay away from foreach since it will loop until processes = 0
+                /// as a result, the ^^^^ functions/methods above won't be called at all.
+
+                foreach(Process p in processes.ToArray())
+                {
+                    if (processes.Count != 0)
+                    {
+                        processes.Remove(p);
+                        Console.WriteLine("Removed a process");
+                    }
+                }
             }
             int totalTurnaround = 0;
             int totalWaitingtime = 0;
