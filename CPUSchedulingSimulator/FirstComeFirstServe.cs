@@ -139,7 +139,11 @@ namespace CPUSchedulingSimulator {
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
 
-            while(processes.Count != 0) {
+            /// **** ERROR FOUND!!!
+            /// This is an infinity loop, Processes.Count will always be 100!!! so it will never reach 0!
+            /// Do we need to decrement this? 
+
+            while (processes.Count != 0) {
                 addNewProcess();
                 moveFromRunningToWaiting();
                 moveFromReadyToRunning();

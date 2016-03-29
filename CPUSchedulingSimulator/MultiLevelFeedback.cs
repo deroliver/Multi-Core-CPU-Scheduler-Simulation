@@ -98,6 +98,7 @@ namespace CPUSchedulingSimulator
             {
                 Process nextProcess = waitingQueue.Dequeue();
                 nextProcess.bursts[nextProcess.currentBurst].step += 1;
+                waitingQueue.Enqueue(nextProcess);
             }
 
             // Update the ready Queue
@@ -105,6 +106,7 @@ namespace CPUSchedulingSimulator
             {
                 Process nextProcess = readyQueue.Dequeue();
                 nextProcess.bursts[nextProcess.currentBurst].step += 1;
+                nextProcess.waitingTime++;
                 readyQueue.Enqueue(nextProcess);
             }
 
@@ -118,7 +120,7 @@ namespace CPUSchedulingSimulator
             }
         }
 
-        public override void run(List<Core> CPUS)
+        public override void run(List<Core> CPUS, string filename)
         {
             int status = 0;
             this.CPUS = CPUS;
@@ -135,10 +137,14 @@ namespace CPUSchedulingSimulator
             preReadyQueue.Clear();
 
             // Initialize processes
-            loadProcesses("Some File");
+            loadProcesses(filename);
 
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
+
+            /// **** ERROR FOUND!!!
+            /// This is an infinity loop, Processes.Count will always be 100!!! so it will never reach 0!
+            /// Do we need to decrement this? 
 
             while(processes.Count != 0)
             {
@@ -152,10 +158,32 @@ namespace CPUSchedulingSimulator
                 cpuUtilizationTicks += numberOfCurrentRunningProcesses();
 
                 // If there are no more running processes and the waiting queue is empty, break
+                Console.WriteLine("I made it here before if statement");
                 if (numberOfCurrentRunningProcesses() == 0 && totalExpectedProcesses() == 0 && waitingQueue.Count == 0)
+                {
+                    Console.WriteLine("I made it into the if statement");
                     break;
+                }
+                Console.WriteLine("If statement broke, starting ticks");
                 ticks += 1;
             }
+            int totalTurnaround = 0;
+            int totalWaitingtime = 0;
+            int lastPID = 0;
+
+            for (int i = 0; i < processes.Count; i++)
+            {
+                totalTurnaround += processes[i].endTime - processes[i].arrivalTime;
+                totalWaitingtime += processes[i].waitingTime;
+
+                if (processes[i].endTime == ticks)
+                    lastPID = processes[i].processID;
+            }
+
+            Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
+            Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
+            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
+            Console.WriteLine("Total Context Switches: " + cpuUtilizationTicks * 100 / ticks);
         }
     }
 }
