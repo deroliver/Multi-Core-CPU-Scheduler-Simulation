@@ -14,12 +14,13 @@ namespace CPUSchedulingSimulator {
         /// run the process on it.
         /// </summary>
         public override void moveFromReadyToRunning() {
-            preReadyQueue.Sort(processIDComparer); 
-            for(int i = 0; i < preReadyQueue.Count; i++) {
+            preReadyQueue.Sort(processIDComparer);
+            for (int i = 0; i < preReadyQueue.Count; i++) {
                 readyQueue.Enqueue(preReadyQueue[i]);
+                preReadyQueue.RemoveAt(i);
             }
 
-            for(int i = 0; i < CPUS.Count; i++) {
+            for (int i = 0; i < CPUS.Count; i++) {
                 if (CPUS[i].process == null)
                     CPUS[i].process = getNextProcess();
             }
@@ -29,7 +30,7 @@ namespace CPUSchedulingSimulator {
         /// Simply adds a process to the preReady queue
         /// </summary>
         public override void addNewProcess() {
-            while(nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks) {
+            while (nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks) {
                 preReadyQueue.Add(processes[nextProcess++]);
             }
         }
@@ -39,7 +40,7 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         /// <returns></returns>
         public override Process getNextProcess() {
-            if(readyQueue.Count == 0) {
+            if (readyQueue.Count == 0) {
                 return null;
             }
             Process nextProcess = readyQueue.Dequeue();
@@ -56,16 +57,16 @@ namespace CPUSchedulingSimulator {
         /// If the process has completed, set its endTime, and terminate it.
         /// </summary>
         public override void moveFromRunningToWaiting() {
-            for(int i = 0; i < CPUS.Count; i++) {
-                if(CPUS[i].process != null) {
-                    int burstStep = CPUS[i].process.bursts[CPUS[i].process.currentBurst].step;
-                    int burstLength = CPUS[i].process.bursts[CPUS[i].process.currentBurst].length;
+            for (int i = 0; i < CPUS.Count; i++) {
+                if (CPUS[i].process != null) {
+                    int burstStep = CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step;
+                    int burstLength = CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].length;
+                    //Console.WriteLine(CPUS[i].process.processID + "   " + burstStep + "    " + burstLength);
                     if (burstStep == burstLength) {
-                        CPUS[i].process.currentBurst += 1;
-                        if(CPUS[i].process.currentBurst < CPUS[i].process.numBursts) {
+                        CPUS[i].process.currentBurst += 1;                    
+                        if (CPUS[i].process.currentBurst - 1 < CPUS[i].process.numBursts) {
                             waitingQueue.Enqueue(CPUS[i].process);
-                        }
-                        else {
+                        } else {
                             CPUS[i].process.endTime = ticks;
                         }
                         CPUS[i].process = null;
@@ -80,13 +81,19 @@ namespace CPUSchedulingSimulator {
         /// remove it from the waitingQueue.
         /// </summary>
         public override void moveFromWaitingToReady() {
-            for(int i = 0; i < waitingQueue.Count; i++) {
+            int waitingQueueSize = waitingQueue.Count;
+            for (int i = 0; i < waitingQueueSize; i++) {
                 Process nextProcess = waitingQueue.Dequeue();
-                if(nextProcess.bursts[nextProcess.currentBurst].step == nextProcess.bursts[nextProcess.currentBurst].length) {
+                int step = nextProcess.bursts[nextProcess.currentBurst - 1].step;
+                int length = nextProcess.bursts[nextProcess.currentBurst - 1].length;
+
+                int numBursts = nextProcess.numBursts;
+                int currentBurst = nextProcess.currentBurst;
+                Console.WriteLine(nextProcess.processID + "   " + step + "    " + length);
+                if (step == length) {
                     nextProcess.currentBurst += 1;
-                    preReadyQueue.Add(nextProcess);
-                }
-                else {
+                    preReadyQueue.Add(nextProcess);              
+                } else {
                     waitingQueue.Enqueue(nextProcess);
                 }
             }
@@ -97,34 +104,35 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         public override void updateProcessState() {
             // Update the waiting queue
-            for(int i = 0; i < waitingQueue.Count; i++) {
+            for (int i = 0; i < waitingQueue.Count; i++) {
                 Process nextProcess = waitingQueue.Dequeue();
-                nextProcess.bursts[nextProcess.currentBurst].step += 1;
-                waitingQueue.Enqueue(nextProcess);
+                    nextProcess.bursts[nextProcess.currentBurst - 1].step += 1;
+                    waitingQueue.Enqueue(nextProcess);               
             }
 
             // Update the ready queue
             for (int i = 0; i < readyQueue.Count; i++) {
                 Process nextProcess = readyQueue.Dequeue();
-                nextProcess.bursts[nextProcess.currentBurst].step += 1;
+                //nextProcess.bursts[nextProcess.currentBurst].step += 1;
                 nextProcess.waitingTime++;
                 readyQueue.Enqueue(nextProcess);
             }
 
             // Update the running queue (CPUS)
-            for(int i = 0; i < CPUS.Count; i++) {
-                if(CPUS[i].process != null) {
-                    CPUS[i].update();
+            for (int i = 0; i < CPUS.Count; i++) {
+                if (CPUS[i].process != null) {
+                    CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step++;
                 }
             }
         }
 
         public override void run(List<Core> CPUS, string filename) {
             int status = 0;
+            nextProcess = 0;
             this.CPUS = CPUS;
-            
+
             // Make sure the CPUs are empty
-            for(int i = 0; i < CPUS.Count; i++) {
+            for (int i = 0; i < CPUS.Count; i++) {
                 CPUS[i].process = null;
             }
 
@@ -164,7 +172,7 @@ namespace CPUSchedulingSimulator {
             int totalWaitingtime = 0;
             int lastPID = 0;
 
-            for(int i = 0; i < processes.Count; i++) {
+            for (int i = 0; i < processes.Count; i++) {
                 totalTurnaround += processes[i].endTime - processes[i].arrivalTime;
                 totalWaitingtime += processes[i].waitingTime;
 
@@ -178,6 +186,8 @@ namespace CPUSchedulingSimulator {
             //Console.WriteLine("Total Context Switches: " + cpuUtilizationTicks * 100 / ticks);
 
             // Calculate data stuffs
+
+            Console.ReadKey();
         }
     }
 }

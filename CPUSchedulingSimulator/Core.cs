@@ -40,7 +40,7 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         public void update() {
             if (process != null) {
-                process.bursts[process.currentBurst].step += 1;
+                //process.bursts[process.currentBurst].step += 1;                          
             }
         }
     }

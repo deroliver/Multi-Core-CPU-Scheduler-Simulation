@@ -112,7 +112,7 @@ namespace CPUSchedulingSimulator {
         public int numberOfCurrentRunningProcesses() {
             int totalRunning = 0;
             for (int i = 0; i < CPUS.Count; i++) {
-                if (CPUS[i] != null)
+                if (CPUS[i].process != null)
                     totalRunning++;
             }
             return totalRunning;

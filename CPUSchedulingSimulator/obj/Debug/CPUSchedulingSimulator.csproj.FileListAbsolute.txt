@@ -21,3 +21,9 @@ C:\Users\I Ninja\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimula
 C:\Users\I Ninja\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe
 C:\Users\I Ninja\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.pdb
 C:\Users\I Ninja\Desktop\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.csprojResolveAssemblyReference.cache
+C:\Users\Oliver\Documents\GitHub\NEWOS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe.config
+C:\Users\Oliver\Documents\GitHub\NEWOS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.exe
+C:\Users\Oliver\Documents\GitHub\NEWOS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.pdb
+C:\Users\Oliver\Documents\GitHub\NEWOS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe
+C:\Users\Oliver\Documents\GitHub\NEWOS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.pdb
+C:\Users\Oliver\Documents\GitHub\NEWOS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.csprojResolveAssemblyReference.cache

@@ -12,6 +12,8 @@ namespace CPUSchedulingSimulator {
             bursts = burst;
             arrivalTime = arrivaltime;
             numBursts = numbursts;
+            currentBurst = 1;
+            waitingTime = 0;
         }
 
 

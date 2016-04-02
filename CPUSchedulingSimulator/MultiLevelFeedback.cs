@@ -196,8 +196,8 @@ namespace CPUSchedulingSimulator
                     lastPID = processes[i].processID;
             }
 
-            Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
-            Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
+            //Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
+            //Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
             Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
             Console.WriteLine("Total Context Switches: " + cpuUtilizationTicks * 100 / ticks);
         }

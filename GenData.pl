@@ -36,7 +36,7 @@ if($num_processes > 0 && $max_cpu_burst > 0 && $max_io_burst > 0) {
 
 		$num_bursts = int(rand(5)) + 1;
 
-		$total_bursts = 2 * $num_bursts;
+		$total_bursts = 2 * $num_bursts + 1;
 
 		$line .= "$total_bursts";
 
@@ -46,6 +46,9 @@ if($num_processes > 0 && $max_cpu_burst > 0 && $max_io_burst > 0) {
 			$line .= " $cpu_burst ";
 			$line .= "$io_burst";
 		}
+
+		$cpu_burst = int(rand($max_cpu_burst)) + 1;
+		$line.= " $cpu_burst";
 
 		print FILE "$line\r\n";
 	}
