@@ -1,0 +1,31 @@
+FCFS
+Average Wait Time: 1273
+Average Turnaround Time: 1450
+Average Utilization Time: 393
+
+RR: Quantum 10
+Average Wait Time: 1338
+Average Turnaround Time: 1515
+Average Utilization Time: 390
+
+RR: Quantum 5
+Average Wait Time: 1344
+Average Turnaround Time: 1520
+Average Utilization Time: 395
+
+RR: Quantum 1
+Average Wait Time: 1346
+Average Turnaround Time: 1523
+Average Utilization Time: 388
+
+
+RR: Quantum 25
+Average Wait Time: 1323
+Average Turnaround Time: 1499
+Average Utilization Time: 392
+
+
+RR: Quantum 100 (Same as FCFS)
+Average Wait Time: 1273
+Average Turnaround Time: 1450
+Average Utilization Time: 393

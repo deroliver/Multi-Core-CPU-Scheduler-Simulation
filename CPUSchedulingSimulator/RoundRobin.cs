@@ -6,29 +6,30 @@ using System.Threading.Tasks;
 
 namespace CPUSchedulingSimulator
 {
-    /*
     public class RoundRobin : SchedulingAlgorithm
     {
+
+
+        public RoundRobin(int quantum) : base() {
+            quantumtime = quantum;
+        }
+
         int contextswitch;
         // </Summary>
         // Gets the list of Process in order from P1,P2...
         // Gets the created Processes from the PrereadyQueue. Checks to see if there are any open CPU's
         // to run more processes.
         // </summary>
-        public override void moveFromReadyToRunning()
-        {
+        public override void moveFromReadyToRunning() {
             preReadyQueue.Sort(processIDComparer);
-            for (int i = 0; i < preReadyQueue.Count;i++)
-            {
+            for (int i = 0; i < preReadyQueue.Count; i++) {
                 readyQueue.Enqueue(preReadyQueue[i]);
             }
-
-            for (int i = 0; i < CPUS.Count;i++)
-            {
+            preReadyQueue.Clear();
+            Console.WriteLine("Number of CPUS: " + CPUS.Count);
+            for (int i = 0; i < CPUS.Count; i++) {
                 if (CPUS[i].process == null)
-                {
                     CPUS[i].process = getNextProcess();
-                }
             }
         }
 
@@ -37,15 +38,37 @@ namespace CPUSchedulingSimulator
         // less than the processes created as well as to check if the arrival time from the previous
         // is less than the clock. After checking it creates a new process in the preReadyQueue.
         // </summary>
-        public override void addNewProcess()
-        {
-            while (nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks)
-            {
-                preReadyQueue.Add(processes[nextProcess++]);
+        public override void addNewProcess() {
+            while (nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks) {
+                preReadyQueue.Add(processes[nextProcess]);
+                Console.WriteLine("Processes Count: " + processes.Count);
+                Console.WriteLine("Next Process: " + nextProcess);
                 processes[nextProcess].quantumRemaining = quantumtime;
-                
+                nextProcess++;     
             }
         }
+
+        /// <summary>
+        /// Check the processes in the waiting queue to see if their I/O burst is complete
+        /// If it is, then move on to the next burst for that process and add it to the pre-ready queue
+        /// </summary>
+        public override void moveFromWaitingToReady() {
+            int waitingQueueSize = waitingQueue.Count;
+            for (int i = 0; i < waitingQueueSize; i++) {
+                Process next_Process = waitingQueue.Dequeue();
+                int step = next_Process.bursts[next_Process.currentBurst - 1].step;
+                int length = next_Process.bursts[next_Process.currentBurst - 1].length;
+                if (step == length) {
+                    next_Process.currentBurst += 1;
+                    next_Process.quantumRemaining = quantumtime;
+                    next_Process.endTime = ticks;
+                    preReadyQueue.Add(next_Process);
+                } else {
+                    waitingQueue.Enqueue(next_Process);
+                }
+            }
+        }
+
 
         //</Summary>
         // Getting the next process that is ready to be used in burst time and quantun time.
@@ -60,98 +83,71 @@ namespace CPUSchedulingSimulator
             return nextProcess;
         }
 
-        public override void moveFromWaitingToReady()
-        {
-            for (int i = 0;i < waitingQueue.Count;i++)
-            {
-                Process Next_Process = waitingQueue.Dequeue();
-                if (Next_Process.bursts[Next_Process.currentBurst].step == Next_Process.bursts[Next_Process.currentBurst].length)
-                {  
-                    Next_Process.currentBurst += 1;
-                    Next_Process.quantumRemaining = quantumtime;
-                    Next_Process.endTime = ticks;
-                    preReadyQueue.Add(Next_Process);
-                }
-                else {
-                    waitingQueue.Enqueue(Next_Process);
-                }
+       
 
-            }
-        }
-
-        // </summary>
-        // Used to update the state of a process whenever we need to send the processes back to the waiting
-        // queue and or readyqueue.
-        // </summary>
-        public override void updateProcessState()
-        {
-            for (int i = 0;i < readyQueue.Count;i++)
-            {
-                Process next_process = readyQueue.Dequeue();
-                next_process.bursts[next_process.currentBurst].step += 1;
-                next_process.waitingTime++;
-                readyQueue.Enqueue(next_process);
-            }
-
-            for (int j = 0;j < waitingQueue.Count;j++)
-            {
-                Process next_process = waitingQueue.Dequeue();
-                next_process.bursts[next_process.currentBurst].step += 1;
-                waitingQueue.Enqueue(next_process);
-            }
-
-            for (int i = 0; i < CPUS.Count; i++)
-            {
-                if (CPUS[i].process != null)
-                {
-                    // CPUS[i].update();
-                    CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
-                    CPUS[i].process.quantumRemaining  -= 1;
-                }
-            }
-        }
-
-        public override void moveFromRunningToWaiting()
-        {
-
-            for (int i = 0; i < CPUS.Count; i++)
-            {
-                //int num = 0;
-                if (CPUS[i] != null)
-                {
-                    if (CPUS[i].process.bursts[CPUS[i].process.currentBurst].step == CPUS[i].process.bursts[CPUS[i].process.currentBurst].length)
-                    {
+        public override void moveFromRunningToWaiting() {
+            for (int i = 0; i < CPUS.Count; i++) {
+                if (CPUS[i].process != null) {
+                    int step = CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step;
+                    int length = CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].length;
+                    if (step == length) {
                         CPUS[i].process.currentBurst += 1;
-                        if (CPUS[i].process.currentBurst < CPUS[i].process.numBursts)
-                        {
+                        if (CPUS[i].process.currentBurst < CPUS[i].process.numBursts) {
                             waitingQueue.Enqueue(CPUS[i].process);
                         }
                         else {
                             CPUS[i].process.endTime = ticks;
                         }
-                        CPUS[i] = null;
+                        CPUS[i].process = null;
                     }
                     // context switch takes longer than time slice
-                    else if (CPUS[i].process.quantumRemaining == 0)
-                    {
+                    else if (CPUS[i].process.quantumRemaining == 0) {
                         Process new_process = CPUS[i].process;
                         new_process.quantumRemaining = quantumtime;
                         readyQueue.Enqueue(new_process);
                         contextSwitch++;
-                        CPUS[i] = null;
+                        CPUS[i].process = null;
                     }
                 }
             }
         }
 
-        public override void run(List<Core> CPUS)
-        {
+
+        // </summary>
+        // Used to update the state of a process whenever we need to send the processes back to the waiting
+        // queue and or readyqueue.
+        // </summary>
+        public override void updateProcessState() {
+            for (int i = 0; i < readyQueue.Count; i++) {
+                Process next_process = readyQueue.Dequeue();
+                next_process.waitingTime++;
+                readyQueue.Enqueue(next_process);
+            }
+
+            for (int j = 0; j < waitingQueue.Count; j++) {
+                Process next_process = waitingQueue.Dequeue();
+                next_process.bursts[next_process.currentBurst - 1].step += 1;
+                waitingQueue.Enqueue(next_process);
+            }
+
+            for (int i = 0; i < CPUS.Count; i++) {
+                if (CPUS[i].process != null) {
+                    CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;
+                    CPUS[i].process.quantumRemaining -= 1;
+                }
+            }
+        }
+
+
+        public override void run(List<Core> CPUS, string filename) {
             int status = 0;
-            this.CPUS = CPUS;
+            nextProcess = 0;
+            for (int i = 0; i < 4; i++) {
+                this.CPUS.Add(new Core());
+            }
 
             // Make sure the CPUs are empty
-            for (int i = 0; i < CPUS.Count; i++)
-            {
+            for (int i = 0; i < CPUS.Count; i++) {
                 CPUS[i].process = null;
             }
 
@@ -160,14 +156,17 @@ namespace CPUSchedulingSimulator
             waitingQueue.Clear();
             preReadyQueue.Clear();
 
-            // Initialize processes
-            loadProcesses("Some File");
+            // Load the processes
+            loadProcesses(filename);
 
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
 
-            while (processes.Count != 0)
-            {
+            /// **** ERROR FOUND!!!
+            /// This is an infinity loop, Processes.Count will always be 100!!! so it will never reach 0!
+            /// Do we need to decrement this? 
+
+            while (processes.Count != 0) {
                 addNewProcess();
                 moveFromRunningToWaiting();
                 moveFromReadyToRunning();
@@ -183,7 +182,24 @@ namespace CPUSchedulingSimulator
 
                 ticks += 1;
             }
+
+            int lastPID = 0;
+
+            for (int i = 0; i < processes.Count; i++) {
+                totalTurnaroundTime += processes[i].endTime - processes[i].arrivalTime;
+                totalWaitingTime += processes[i].waitingTime;
+
+                if (processes[i].endTime == ticks)
+                    lastPID = processes[i].processID;
+            }
+
+            Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
+            Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
+            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
+
+            // Calculate data stuffs
+
+            Console.ReadKey();
         }
     }
-    */
 }

@@ -23,21 +23,21 @@ namespace CPUSchedulingSimulator {
             get; set;
         }
 
-        public int quantumtime
-        {
+        public int quantumtime{
             get; set;
         }
 
-        public int contextSwitch
-        {
+        public int contextSwitch{
             get; set;
         }
 
-        //public int numberOfProcesses {
-            //get { return numberOfProcesses; }
-       // }
+        public int totalWaitingTime {
+            get; set;
+        }
        
-        
+        public int totalTurnaroundTime {
+            get; set;
+        }     
         /// <summary>
         /// Keeps track of CPU utilization ticks
         /// </summary>
@@ -55,6 +55,8 @@ namespace CPUSchedulingSimulator {
             waitingQueue = new Queue<Process>();
             preReadyQueue = new List<Process>();
             CPUS = new List<Core>();
+            cpuUtilizationTicks = 0;
+            ticks = 0;
         }
 
         #region Abstract Methods
