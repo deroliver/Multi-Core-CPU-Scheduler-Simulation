@@ -185,7 +185,7 @@ namespace CPUSchedulingSimulator {
             }
 
             // Update the ready processes
-            for (int i = 0; i < arrayOfReadyQueues.; i++) {
+            for (int i = 0; i < arrayOfReadyQueues.`; i++) {
                 Process nextProcess = readyQueue.Dequeue();
                 nextProcess.bursts[nextProcess.currentBurst].step += 1;
                 nextProcess.waitingTime++;
