@@ -59,6 +59,7 @@ namespace CPUSchedulingSimulator {
             ticks = 0;
         }
 
+
         #region Abstract Methods
 
         public abstract Process getNextProcess();

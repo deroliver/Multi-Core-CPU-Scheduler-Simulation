@@ -55,8 +55,8 @@ namespace CPUSchedulingSimulator {
         public int currentBurst {
             get; set;
         }
-    
-        private int priority {
+
+        public int priority {
             get; set;
         }
         // Changed to public to access inside my Round Robin
