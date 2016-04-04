@@ -8,7 +8,20 @@ namespace CPUSchedulingSimulator {
     public class MultiLevelFeedBack : SchedulingAlgorithm {
         List<Process> p = new List<Process>();
         private Queue<Process>[] arrayOfReadyQueues;
-        private int[] quantums = new int[3];
+        private const int NUMBER_OF_QUEUES = 3;
+        private int[] quantums = new int[NUMBER_OF_QUEUES - 1];
+        
+
+        public MultiLevelFeedBack() : base() {
+            arrayOfReadyQueues = new Queue<Process>[NUMBER_OF_QUEUES];
+            for (int i = 0; i < NUMBER_OF_QUEUES; i++)
+                arrayOfReadyQueues[i] = new Queue<Process>();
+
+            readyQueue = null;
+
+            quantums[0] = 50;
+            quantums[1] = 50; 
+         }
    
         /// <summary>
         /// Sort the preReadyQueue, then move the processes from the 
@@ -54,10 +67,10 @@ namespace CPUSchedulingSimulator {
 
             }
             else if (rQ2Size != 0) {
-                nextProcess = arrayOfReadyQueues[0].Dequeue();
+                nextProcess = arrayOfReadyQueues[1].Dequeue();
             }
             else if (rQ3Size != 0) {
-                nextProcess = arrayOfReadyQueues[0].Dequeue();
+                nextProcess = arrayOfReadyQueues[2].Dequeue();
             }
 
             return nextProcess;
@@ -69,16 +82,17 @@ namespace CPUSchedulingSimulator {
             int rQ3Size = arrayOfReadyQueues[2].Count;
 
             for (int i = 0; i < CPUS.Count; i++) {
+                // There is a process in the CPU
                 if (CPUS[i].process != null) {
-                    int step = CPUS[i].process.bursts[CPUS[i].process.currentBurst].step;
-                    int length = CPUS[i].process.bursts[CPUS[i].process.currentBurst].length;
+                    int step = CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step;
+                    int length = CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].length;
                     int quantum = CPUS[i].process.quantumRemaining;
                     int priority = CPUS[i].process.priority;
 
                     // The burst is not done, and neither is the quantum time
                     if (step != length && quantum != quantums[0] && priority == 0) {
                         CPUS[i].process.quantumRemaining++;
-                        CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;                       
+                        CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;                       
                     }
                     // The burst is not done, but the quantum is up
                     else if(step != length && quantum == quantums[0] && priority == 0) {
@@ -97,7 +111,7 @@ namespace CPUSchedulingSimulator {
                             CPUS[i].process = null;
                         }
                         else {
-                            CPUS[i].process.bursts[CPUS[i].process.currentBurst].step++;
+                            CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step++;
                             CPUS[i].process.quantumRemaining += 1;
                         }
                     }
@@ -118,7 +132,7 @@ namespace CPUSchedulingSimulator {
                             CPUS[i].process = null;
                         }
                         else {
-                            CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
+                            CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;
                         }
                     }
 
@@ -142,19 +156,19 @@ namespace CPUSchedulingSimulator {
                     if(rQ1Size != 0) {
                         Process nextProcess = arrayOfReadyQueues[0].Dequeue();
                         CPUS[i].process = nextProcess;
-                        CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
+                        CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;
                         CPUS[i].process.quantumRemaining += 1;
                     }
                     if (rQ2Size != 0) {
                         Process nextProcess = arrayOfReadyQueues[1].Dequeue();
                         CPUS[i].process = nextProcess;
-                        CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
+                        CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;
                         CPUS[i].process.quantumRemaining += 1;
                     }
                     if (rQ3Size != 0) {
                         Process nextProcess = arrayOfReadyQueues[2].Dequeue();
                         CPUS[i].process = nextProcess;
-                        CPUS[i].process.bursts[CPUS[i].process.currentBurst].step += 1;
+                        CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;
                         CPUS[i].process.quantumRemaining += 1;
                     }
                 }
@@ -162,9 +176,12 @@ namespace CPUSchedulingSimulator {
         }
 
         public override void moveFromWaitingToReady() {
-            for (int i = 0; i < waitingQueue.Count; i++ ) {
+            int waitingQueueCount = waitingQueue.Count;
+            for (int i = 0; i < waitingQueueCount; i++ ) {
                 Process nextProcess = waitingQueue.Dequeue();
-                if (nextProcess.bursts[nextProcess.currentBurst].step == nextProcess.bursts[nextProcess.currentBurst].length) {
+                nextProcess.priority = 0;
+                nextProcess.quantumRemaining = 0;
+                if (nextProcess.bursts[nextProcess.currentBurst - 1].step == nextProcess.bursts[nextProcess.currentBurst - 1].length) {
                     nextProcess.currentBurst += 1;
                     preReadyQueue.Add(nextProcess);
                 }
@@ -178,30 +195,23 @@ namespace CPUSchedulingSimulator {
 
             int waitingQueueSize = waitingQueue.Count;
             // Update the waiting Queue
-            for (int i = 0; i < waitingQueueSize; i++ ) {
+            for (int i = 0; i < waitingQueueSize; i++) {
                 Process nextProcess = waitingQueue.Dequeue();
-                nextProcess.bursts[nextProcess.currentBurst].step += 1;
+                nextProcess.bursts[nextProcess.currentBurst - 1].step += 1;
                 waitingQueue.Enqueue(nextProcess);
             }
 
             // Update the ready processes
-            for (int i = 0; i < arrayOfReadyQueues.`; i++) {
-                Process nextProcess = readyQueue.Dequeue();
-                nextProcess.bursts[nextProcess.currentBurst].step += 1;
-                nextProcess.waitingTime++;
-                readyQueue.Enqueue(nextProcess);
-            }
-
-            // Update the running Queue (CPUS)
-            for (int i = 0; i < CPUS.Count; i++) {
-                if (CPUS[i].process != null) {
-                    CPUS[i].update();
-                }
+            for (int i = 0; i < NUMBER_OF_QUEUES; i++) {
+                for(int j = 0; j < arrayOfReadyQueues[i].Count; j++) {
+                    Process nextProcess = arrayOfReadyQueues[i].Dequeue();
+                    nextProcess.waitingTime++;
+                    arrayOfReadyQueues[i].Enqueue(nextProcess);
+                }        
             }
         }
 
         public override void run(List<Core> CPUS, string filename) {
-            int status = 0;
             this.CPUS = CPUS;
 
             // Make sure CPUS are empty
@@ -210,7 +220,6 @@ namespace CPUSchedulingSimulator {
             }
 
             // Make sure queues are empty
-            readyQueue.Clear();
             waitingQueue.Clear();
             preReadyQueue.Clear();
 
@@ -219,10 +228,6 @@ namespace CPUSchedulingSimulator {
 
             // Sort the processes by arrival time
             processes.Sort(arrivalTimeComparer);
-
-            /// **** ERROR FOUND!!!
-            /// This is an infinity loop, Processes.Count will always be 100!!! so it will never reach 0!
-            /// Do we need to decrement this? 
 
             while(processes.Count != 0) {
                 addNewProcess();
@@ -234,27 +239,10 @@ namespace CPUSchedulingSimulator {
 
                 cpuUtilizationTicks += numberOfCurrentRunningProcesses();
 
-                // If there are no more running processes and the waiting queue is empty, break
-                Console.WriteLine("I made it here before if statement");
                 if (numberOfCurrentRunningProcesses() == 0 && totalExpectedProcesses() == 0 && waitingQueue.Count == 0) {
-                    Console.WriteLine("I made it into the if statement");
                     break;
                 }
-                Console.WriteLine("If statement broke, starting ticks");
-                ticks += 1;
-                
-                /// Created a foreach statement that removes each process, but when this is done
-                /// At the end it completely removes the processes, so there is a count of 0
-                /// Could use some tuning.
-                /// Might want to stay away from foreach since it will loop until processes = 0
-                /// as a result, the ^^^^ functions/methods above won't be called at all.
-
-                foreach(Process p in processes.ToArray()) {
-                    if (processes.Count != 0) {
-                        processes.Remove(p);
-                        Console.WriteLine("Removed a process");
-                    }
-                }
+                ticks += 1;              
             }
 
             int totalTurnaround = 0;
@@ -263,16 +251,19 @@ namespace CPUSchedulingSimulator {
 
             for (int i = 0; i < processes.Count; i++) {
                 totalTurnaround += processes[i].endTime - processes[i].arrivalTime;
+                Console.WriteLine(processes[i].waitingTime);
                 totalWaitingtime += processes[i].waitingTime;
 
                 if (processes[i].endTime == ticks)
                     lastPID = processes[i].processID;
             }
 
-            //Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
-            //Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
+            Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
+            Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
             Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
             Console.WriteLine("Total Context Switches: " + cpuUtilizationTicks * 100 / ticks);
+
+            Console.ReadKey();
         }
     }
 }

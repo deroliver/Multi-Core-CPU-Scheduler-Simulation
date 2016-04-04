@@ -126,7 +126,6 @@ namespace CPUSchedulingSimulator {
         }
 
         public override void run(List<Core> CPUS, string filename) {
-            int status = 0;
             nextProcess = 0;
             this.CPUS = CPUS;
 

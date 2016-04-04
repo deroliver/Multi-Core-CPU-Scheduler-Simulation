@@ -21,7 +21,7 @@ namespace CPUSchedulingSimulator {
                 CPUS.Add(new Core());
 
             //scheduler = new MultiLevelFeedBack();
-            scheduler = new RoundRobin(100);
+            scheduler = new MultiLevelFeedBack();
         }
 
         /// <summary>

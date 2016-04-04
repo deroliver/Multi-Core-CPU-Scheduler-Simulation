@@ -140,7 +140,6 @@ namespace CPUSchedulingSimulator
 
 
         public override void run(List<Core> CPUS, string filename) {
-            int status = 0;
             nextProcess = 0;
             for (int i = 0; i < 4; i++) {
                 this.CPUS.Add(new Core());
