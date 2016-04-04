@@ -152,6 +152,8 @@ namespace CPUSchedulingSimulator
             waitingQueue.Clear();
             preReadyQueue.Clear();
 
+            processes.Clear();
+
             // Load the processes
             loadProcesses(filename);
 
@@ -181,6 +183,8 @@ namespace CPUSchedulingSimulator
 
             int lastPID = 0;
             int totalBursts = 0;
+            
+            
 
             for (int i = 0; i < processes.Count; i++) {
                 totalTurnaroundTime += processes[i].endTime - processes[i].arrivalTime;
@@ -197,12 +201,19 @@ namespace CPUSchedulingSimulator
             }
 
             Console.WriteLine("Num Cores: " + CPUS.Count);
-            Console.Write("Quantum: " + quantumtime);
+            Console.WriteLine("Quantum: " + quantumtime);
             Console.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
             Console.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
             Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
             Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
+
+            // Reset all variables
+            ticks = 0;
+            totalWaitingTime = 0;
+            totalTurnaroundTime = 0;
+            totalResponseTime = 0;
+            cpuUtilizationTicks = 0;
 
             // Calculate data stuff
         }

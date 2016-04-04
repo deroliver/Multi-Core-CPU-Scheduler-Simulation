@@ -8,16 +8,17 @@ namespace CPUSchedulingSimulator {
     public class DataCreator {
         public void Test() {
             int numCores = 2;
-            int quantum = 5;
+            int quantum = 0;
             SchedulingAlgorithm RoundRobin;
             Simulator S;
 
-            for (int i = 0; i < 20; i++) {
-                RoundRobin = new RoundRobin(quantum += 5);
+            for (int i = 0; i < 5; i++) {
+                RoundRobin = new RoundRobin(quantum += 10);
                 for(int j = 0; j < 4; j++) {
-                   // S = new Simulator(numCores += 2, RoundRobin);
-                    //S.run();
+                    S = new Simulator(numCores += 2, RoundRobin);
+                    S.run();
                 }
+                numCores = 0;
             }
         }
     }
