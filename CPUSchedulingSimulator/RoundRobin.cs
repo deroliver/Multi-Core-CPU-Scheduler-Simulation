@@ -206,7 +206,7 @@ namespace CPUSchedulingSimulator
             Console.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
             Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
-            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
+            Console.WriteLine("Average Utilization Time: " + (float)cpuUtilizationTicks * 100 / ticks / CPUS.Count + "%");
 
             // Reset all variables
             ticks = 0;
