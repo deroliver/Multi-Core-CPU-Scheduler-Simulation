@@ -19,8 +19,8 @@ namespace CPUSchedulingSimulator {
 
             readyQueue = null;
 
-            quantums[0] = 50;
-            quantums[1] = 50; 
+            quantums[0] = 140;
+            quantums[1] = 70; 
          }
    
         /// <summary>
@@ -95,6 +95,7 @@ namespace CPUSchedulingSimulator {
                         CPUS[i].process.bursts[CPUS[i].process.currentBurst - 1].step += 1;                       
                     }
                     // The burst is not done, but the quantum is up
+                    // But the process back into the readyQueue
                     else if(step != length && quantum == quantums[0] && priority == 0) {
                         CPUS[i].process.quantumRemaining = 0;
                         CPUS[i].process.priority = 1;
@@ -103,6 +104,7 @@ namespace CPUSchedulingSimulator {
                         CPUS[i].process = null;
                     }
 
+                    // The burst is not done, and the quantum time is not done
                     else if(step != length && quantum != quantums[1] && priority == 1) {
                         if(rQ1Size != 0) {
                             CPUS[i].process.quantumRemaining = 0;
@@ -116,6 +118,7 @@ namespace CPUSchedulingSimulator {
                         }
                     }
 
+                    // The burst is not done but the quantum time is up
                     else if(step != length && quantum == quantums[1] && priority == 1) {
                         CPUS[i].process.quantumRemaining = 0;
                         CPUS[i].process.priority = 2;
@@ -124,6 +127,7 @@ namespace CPUSchedulingSimulator {
                         CPUS[i].process = null;
                     }
 
+                    // The burst is not done, but the priority is 2
                     else if(step != length && priority == 2) {
                         if (rQ1Size != 0 || rQ2Size != 0) {
                             CPUS[i].process.quantumRemaining = 0;
@@ -136,7 +140,7 @@ namespace CPUSchedulingSimulator {
                         }
                     }
 
-                    // FCFS
+                    // FCFS part
                     else if(step == length) {
                         CPUS[i].process.currentBurst += 1;
                         CPUS[i].process.quantumRemaining = 0;
@@ -251,13 +255,13 @@ namespace CPUSchedulingSimulator {
 
             for (int i = 0; i < processes.Count; i++) {
                 totalTurnaround += processes[i].endTime - processes[i].arrivalTime;
-                Console.WriteLine(processes[i].waitingTime);
                 totalWaitingtime += processes[i].waitingTime;
 
                 if (processes[i].endTime == ticks)
                     lastPID = processes[i].processID;
             }
 
+            Console.WriteLine("Number of Cores: " + CPUS.Count);
             Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
             Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);

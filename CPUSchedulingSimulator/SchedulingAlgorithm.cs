@@ -34,6 +34,10 @@ namespace CPUSchedulingSimulator {
         public int totalWaitingTime {
             get; set;
         }
+
+        public int totalResponseTime {
+            get; set;
+        }
        
         public int totalTurnaroundTime {
             get; set;

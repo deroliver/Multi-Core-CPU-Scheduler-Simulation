@@ -89,7 +89,6 @@ namespace CPUSchedulingSimulator {
 
                 int numBursts = nextProcess.numBursts;
                 int currentBurst = nextProcess.currentBurst;
-                Console.WriteLine(nextProcess.processID + "   " + step + "    " + length);
                 if (step == length) {
                     nextProcess.currentBurst += 1;
                     preReadyQueue.Add(nextProcess);              
@@ -104,7 +103,8 @@ namespace CPUSchedulingSimulator {
         /// </summary>
         public override void updateProcessState() {
             // Update the waiting queue
-            for (int i = 0; i < waitingQueue.Count; i++) {
+            int waitingQueueCount = waitingQueue.Count;
+            for (int i = 0; i < waitingQueueCount; i++) {
                 Process nextProcess = waitingQueue.Dequeue();
                     nextProcess.bursts[nextProcess.currentBurst - 1].step += 1;
                     waitingQueue.Enqueue(nextProcess);               
@@ -178,7 +178,7 @@ namespace CPUSchedulingSimulator {
 
             Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
-            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
+            Console.WriteLine("Average Utilization Time: " + (cpuUtilizationTicks * 100) / ticks);
 
             // Calculate data stuffs
 

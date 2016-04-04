@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CPUSchedulingSimulator {
     class Program {
         static void Main(string[] args) {
-            Simulator S = new Simulator(4);
+            Simulator S = new Simulator(8);
             S.run();
         }
     }

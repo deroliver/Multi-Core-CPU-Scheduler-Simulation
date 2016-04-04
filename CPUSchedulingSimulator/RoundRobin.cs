@@ -13,8 +13,6 @@ namespace CPUSchedulingSimulator
         public RoundRobin(int quantum) : base() {
             quantumtime = quantum;
         }
-
-        int contextswitch;
         // </Summary>
         // Gets the list of Process in order from P1,P2...
         // Gets the created Processes from the PrereadyQueue. Checks to see if there are any open CPU's
@@ -28,8 +26,10 @@ namespace CPUSchedulingSimulator
             preReadyQueue.Clear();
             Console.WriteLine("Number of CPUS: " + CPUS.Count);
             for (int i = 0; i < CPUS.Count; i++) {
-                if (CPUS[i].process == null)
+                if (CPUS[i].process == null) {
                     CPUS[i].process = getNextProcess();
+                }
+                    
             }
         }
 
@@ -80,6 +80,8 @@ namespace CPUSchedulingSimulator
                 return null;
             }
             Process nextProcess = readyQueue.Dequeue();
+            if (nextProcess.responseTime == -1)
+                nextProcess.responseTime = ticks - nextProcess.arrivalTime;
             return nextProcess;
         }
 
@@ -141,9 +143,7 @@ namespace CPUSchedulingSimulator
 
         public override void run(List<Core> CPUS, string filename) {
             nextProcess = 0;
-            for (int i = 0; i < 4; i++) {
-                this.CPUS.Add(new Core());
-            }
+            this.CPUS = CPUS;
 
             // Make sure the CPUs are empty
             for (int i = 0; i < CPUS.Count; i++) {
@@ -183,15 +183,24 @@ namespace CPUSchedulingSimulator
             }
 
             int lastPID = 0;
+            int totalBursts = 0;
 
             for (int i = 0; i < processes.Count; i++) {
                 totalTurnaroundTime += processes[i].endTime - processes[i].arrivalTime;
                 totalWaitingTime += processes[i].waitingTime;
+                totalResponseTime += processes[i].responseTime;
+
+                
+                for(int j = 0; j < processes[i].bursts.Count; j++) {
+                    totalBursts += processes[i].bursts[j].length;
+                }
 
                 if (processes[i].endTime == ticks)
                     lastPID = processes[i].processID;
             }
 
+            Console.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
+            Console.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
             Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
             Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);

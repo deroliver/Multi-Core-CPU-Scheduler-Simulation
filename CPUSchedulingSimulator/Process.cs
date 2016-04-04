@@ -14,6 +14,7 @@ namespace CPUSchedulingSimulator {
             numBursts = numbursts;
             currentBurst = 1;
             waitingTime = 0;
+            responseTime = -1;
         }
 
 
@@ -30,6 +31,10 @@ namespace CPUSchedulingSimulator {
         }
 
         public int numBursts {
+            get; set;
+        }
+
+        public int responseTime {
             get; set;
         }
 
