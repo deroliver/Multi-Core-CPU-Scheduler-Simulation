@@ -24,7 +24,6 @@ namespace CPUSchedulingSimulator
                 readyQueue.Enqueue(preReadyQueue[i]);
             }
             preReadyQueue.Clear();
-            Console.WriteLine("Number of CPUS: " + CPUS.Count);
             for (int i = 0; i < CPUS.Count; i++) {
                 if (CPUS[i].process == null) {
                     CPUS[i].process = getNextProcess();
@@ -41,8 +40,6 @@ namespace CPUSchedulingSimulator
         public override void addNewProcess() {
             while (nextProcess < processes.Count && processes[nextProcess].arrivalTime <= ticks) {
                 preReadyQueue.Add(processes[nextProcess]);
-                Console.WriteLine("Processes Count: " + processes.Count);
-                Console.WriteLine("Next Process: " + nextProcess);
                 processes[nextProcess].quantumRemaining = quantumtime;
                 nextProcess++;     
             }
@@ -199,15 +196,15 @@ namespace CPUSchedulingSimulator
                     lastPID = processes[i].processID;
             }
 
+            Console.WriteLine("Num Cores: " + CPUS.Count);
+            Console.Write("Quantum: " + quantumtime);
             Console.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
             Console.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
             Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
             Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
             Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
 
-            // Calculate data stuffs
-
-            Console.ReadKey();
+            // Calculate data stuff
         }
     }
 }

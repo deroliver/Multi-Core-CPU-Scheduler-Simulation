@@ -19,8 +19,8 @@ namespace CPUSchedulingSimulator {
 
             readyQueue = null;
 
-            quantums[0] = 140;
-            quantums[1] = 70; 
+            quantums[0] = 10;
+            quantums[1] = 15; 
          }
    
         /// <summary>

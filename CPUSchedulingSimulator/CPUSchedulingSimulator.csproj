@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="DataCreator.cs" />
     <Compile Include="FirstComeFirstServe.cs" />
     <Compile Include="MultiLevelFeedback.cs" />
     <Compile Include="Process.cs" />

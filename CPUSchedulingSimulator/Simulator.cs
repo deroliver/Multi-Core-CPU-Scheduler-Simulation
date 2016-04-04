@@ -21,7 +21,7 @@ namespace CPUSchedulingSimulator {
                 CPUS.Add(new Core());
 
             //scheduler = new FirstComeFirstServe();
-            scheduler = new RoundRobin(40);
+            scheduler = new RoundRobin(10);
             //scheduler = new(25);
         }
 
