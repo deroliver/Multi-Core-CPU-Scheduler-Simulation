@@ -42,3 +42,9 @@ C:\Users\bxiong17\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedu
 C:\Users\bxiong17\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe
 C:\Users\bxiong17\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.pdb
 C:\Users\bxiong17\Documents\GitHub\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.csprojResolveAssemblyReference.cache
+C:\Users\Oliver\Documents\GitHub\OS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe.config
+C:\Users\Oliver\Documents\GitHub\OS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.exe
+C:\Users\Oliver\Documents\GitHub\OS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.pdb
+C:\Users\Oliver\Documents\GitHub\OS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.exe
+C:\Users\Oliver\Documents\GitHub\OS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\bin\Debug\CPUSchedulingSimulator.pdb
+C:\Users\Oliver\Documents\GitHub\OS\Multi-Core-CPU-Scheduler-Simulation\CPUSchedulingSimulator\obj\Debug\CPUSchedulingSimulator.csprojResolveAssemblyReference.cache

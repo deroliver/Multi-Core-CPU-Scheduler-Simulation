@@ -44,6 +44,8 @@ namespace CPUSchedulingSimulator {
                 return null;
             }
             Process nextProcess = readyQueue.Dequeue();
+            if (nextProcess.responseTime == -1)
+                nextProcess.responseTime = ticks - nextProcess.arrivalTime;
             return nextProcess;
         }
 
@@ -171,18 +173,28 @@ namespace CPUSchedulingSimulator {
             for (int i = 0; i < processes.Count; i++) {
                 totalTurnaroundTime += processes[i].endTime - processes[i].arrivalTime;
                 totalWaitingTime += processes[i].waitingTime;
+                totalResponseTime += processes[i].responseTime;
 
                 if (processes[i].endTime == ticks)
                     lastPID = processes[i].processID;
             }
 
-            Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
-            Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
-            Console.WriteLine("Average Utilization Time: " + (cpuUtilizationTicks * 100) / ticks);
 
-            // Calculate data stuffs
+            using (System.IO.StreamWriter writeText = System.IO.File.AppendText("FirstComeFirstServeData.txt")) {
+                writeText.WriteLine("Num Cores: " + CPUS.Count);
+                writeText.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
+                writeText.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
+                writeText.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
+                writeText.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
+                writeText.WriteLine("Average Utilization Time: " + (float)cpuUtilizationTicks * 100 / ticks / CPUS.Count + "%");
+            }
 
-            Console.ReadKey();
+            // Reset all variables
+            ticks = 0;
+            totalWaitingTime = 0;
+            totalTurnaroundTime = 0;
+            totalResponseTime = 0;
+            cpuUtilizationTicks = 0;
         }
     }
 }

@@ -182,32 +182,27 @@ namespace CPUSchedulingSimulator
             }
 
             int lastPID = 0;
-            int totalBursts = 0;
-            
-            
 
             for (int i = 0; i < processes.Count; i++) {
                 totalTurnaroundTime += processes[i].endTime - processes[i].arrivalTime;
                 totalWaitingTime += processes[i].waitingTime;
                 totalResponseTime += processes[i].responseTime;
 
-                
-                for(int j = 0; j < processes[i].bursts.Count; j++) {
-                    totalBursts += processes[i].bursts[j].length;
-                }
-
                 if (processes[i].endTime == ticks)
                     lastPID = processes[i].processID;
             }
 
-            Console.WriteLine("Num Cores: " + CPUS.Count);
-            Console.WriteLine("Quantum: " + quantumtime);
-            Console.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
-            Console.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
-            Console.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
-            Console.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
-            Console.WriteLine("Average Utilization Time: " + (float)cpuUtilizationTicks * 100 / ticks / CPUS.Count + "%");
+            using (System.IO.StreamWriter writeText = System.IO.File.AppendText("RoundRobinData.txt")) {
+                writeText.WriteLine("Num Cores: " + CPUS.Count);
+                writeText.WriteLine("Quantum: " + quantumtime);
+                writeText.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
+                writeText.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
+                writeText.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
+                writeText.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
+                writeText.WriteLine("Average Utilization Time: " + (float)cpuUtilizationTicks * 100 / ticks / CPUS.Count + "%");
+            }
 
+          
             // Reset all variables
             ticks = 0;
             totalWaitingTime = 0;

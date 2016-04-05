@@ -20,7 +20,7 @@ namespace CPUSchedulingSimulator {
             readyQueue = null;
 
             quantums[0] = 10;
-            quantums[1] = 15; 
+            quantums[1] = 10; 
          }
    
         /// <summary>
@@ -64,15 +64,19 @@ namespace CPUSchedulingSimulator {
             
             if(rQ1Size != 0) {
                 nextProcess = arrayOfReadyQueues[0].Dequeue();
-
+                if (nextProcess.responseTime == -1)
+                    nextProcess.responseTime = ticks - nextProcess.arrivalTime;
             }
             else if (rQ2Size != 0) {
                 nextProcess = arrayOfReadyQueues[1].Dequeue();
+                if (nextProcess.responseTime == -1)
+                    nextProcess.responseTime = ticks - nextProcess.arrivalTime;
             }
             else if (rQ3Size != 0) {
                 nextProcess = arrayOfReadyQueues[2].Dequeue();
+                if (nextProcess.responseTime == -1)
+                    nextProcess.responseTime = ticks - nextProcess.arrivalTime;
             }
-
             return nextProcess;
         }
 
@@ -227,6 +231,8 @@ namespace CPUSchedulingSimulator {
             waitingQueue.Clear();
             preReadyQueue.Clear();
 
+            processes.Clear();
+
             // Initialize processes
             loadProcesses(filename);
 
@@ -249,25 +255,32 @@ namespace CPUSchedulingSimulator {
                 ticks += 1;              
             }
 
-            int totalTurnaround = 0;
-            int totalWaitingtime = 0;
             int lastPID = 0;
 
             for (int i = 0; i < processes.Count; i++) {
-                totalTurnaround += processes[i].endTime - processes[i].arrivalTime;
-                totalWaitingtime += processes[i].waitingTime;
+                totalTurnaroundTime += processes[i].endTime - processes[i].arrivalTime;
+                totalWaitingTime += processes[i].waitingTime;
+                totalResponseTime += processes[i].responseTime;
 
                 if (processes[i].endTime == ticks)
                     lastPID = processes[i].processID;
             }
 
-            Console.WriteLine("Number of Cores: " + CPUS.Count);
-            Console.WriteLine("Average Wait Time: " + totalWaitingtime / processes.Count);
-            Console.WriteLine("Average Turnaround Time: " + totalTurnaround / processes.Count);
-            Console.WriteLine("Average Utilization Time: " + cpuUtilizationTicks * 100 / ticks);
-            Console.WriteLine("Total Context Switches: " + cpuUtilizationTicks * 100 / ticks);
+            using (System.IO.StreamWriter writeText = System.IO.File.AppendText("MultiLevel1010.txt")) {
+                writeText.WriteLine("Num Cores: " + CPUS.Count);
+                writeText.WriteLine("Average Throughput: " + (float)processes.Count / ticks);
+                writeText.WriteLine("Average Response Time: " + totalResponseTime / processes.Count);
+                writeText.WriteLine("Average Wait Time: " + totalWaitingTime / processes.Count);
+                writeText.WriteLine("Average Turnaround Time: " + totalTurnaroundTime / processes.Count);
+                writeText.WriteLine("Average Utilization Time: " + (float)cpuUtilizationTicks * 100 / ticks / CPUS.Count + "%");
+            }
 
-            Console.ReadKey();
+            // Reset all variables
+            ticks = 0;
+            totalWaitingTime = 0;
+            totalTurnaroundTime = 0;
+            totalResponseTime = 0;
+            cpuUtilizationTicks = 0;
         }
     }
 }
