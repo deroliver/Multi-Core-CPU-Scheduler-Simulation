@@ -141,3 +141,143 @@ Average Utilization Time: 99.44911%
 Average Wait Time: 33335
 Average Turnaround Time: 33518
 Average Utilization Time: 199
+Num Cores: 6
+Quantum: 35
+Average Throughput: 0.05820383
+Average Response Time: 1424
+Average Wait Time: 8631
+Average Turnaround Time: 8815
+Average Utilization Time: 99.61585%
+Num Cores: 8
+Quantum: 35
+Average Throughput: 0.07733354
+Average Response Time: 920
+Average Wait Time: 5428
+Average Turnaround Time: 5612
+Average Utilization Time: 99.26727%
+Num Cores: 10
+Quantum: 35
+Average Throughput: 0.09621861
+Average Response Time: 610
+Average Wait Time: 3487
+Average Turnaround Time: 3671
+Average Utilization Time: 98.80689%
+Num Cores: 12
+Quantum: 35
+Average Throughput: 0.1147974
+Average Response Time: 396
+Average Wait Time: 2190
+Average Turnaround Time: 2374
+Average Utilization Time: 98.23786%
+Num Cores: 2
+Quantum: 45
+Average Throughput: 0.01946169
+Average Response Time: 5897
+Average Wait Time: 33704
+Average Turnaround Time: 33888
+Average Utilization Time: 99.95426%
+Num Cores: 4
+Quantum: 45
+Average Throughput: 0.03888176
+Average Response Time: 2720
+Average Wait Time: 14791
+Average Turnaround Time: 14975
+Average Utilization Time: 99.8192%
+Num Cores: 6
+Quantum: 45
+Average Throughput: 0.05812602
+Average Response Time: 1623
+Average Wait Time: 8487
+Average Turnaround Time: 8671
+Average Utilization Time: 99.48268%
+Num Cores: 8
+Quantum: 45
+Average Throughput: 0.07719623
+Average Response Time: 1046
+Average Wait Time: 5336
+Average Turnaround Time: 5520
+Average Utilization Time: 99.09101%
+Num Cores: 2
+Quantum: 55
+Average Throughput: 0.01946358
+Average Response Time: 6129
+Average Wait Time: 33335
+Average Turnaround Time: 33518
+Average Utilization Time: 99.96399%
+Num Cores: 4
+Quantum: 55
+Average Throughput: 0.03888025
+Average Response Time: 2869
+Average Wait Time: 14579
+Average Turnaround Time: 14763
+Average Utilization Time: 99.84351%
+Num Cores: 6
+Quantum: 55
+Average Throughput: 0.05823094
+Average Response Time: 1716
+Average Wait Time: 8340
+Average Turnaround Time: 8524
+Average Utilization Time: 99.69041%
+Num Cores: 8
+Quantum: 55
+Average Throughput: 0.07745334
+Average Response Time: 1110
+Average Wait Time: 5231
+Average Turnaround Time: 5415
+Average Utilization Time: 99.44911%
+Num Cores: 2
+Quantum: 65
+Average Throughput: 0.01946358
+Average Response Time: 6129
+Average Wait Time: 33335
+Average Turnaround Time: 33518
+Average Utilization Time: 99.96399%
+Num Cores: 4
+Quantum: 65
+Average Throughput: 0.03888025
+Average Response Time: 2869
+Average Wait Time: 14579
+Average Turnaround Time: 14763
+Average Utilization Time: 99.84351%
+Num Cores: 6
+Quantum: 65
+Average Throughput: 0.05823094
+Average Response Time: 1716
+Average Wait Time: 8340
+Average Turnaround Time: 8524
+Average Utilization Time: 99.69041%
+Num Cores: 8
+Quantum: 65
+Average Throughput: 0.07745334
+Average Response Time: 1110
+Average Wait Time: 5231
+Average Turnaround Time: 5415
+Average Utilization Time: 99.44911%
+Num Cores: 2
+Quantum: 75
+Average Throughput: 0.01946358
+Average Response Time: 6129
+Average Wait Time: 33335
+Average Turnaround Time: 33518
+Average Utilization Time: 99.96399%
+Num Cores: 4
+Quantum: 75
+Average Throughput: 0.03888025
+Average Response Time: 2869
+Average Wait Time: 14579
+Average Turnaround Time: 14763
+Average Utilization Time: 99.84351%
+Num Cores: 6
+Quantum: 75
+Average Throughput: 0.05823094
+Average Response Time: 1716
+Average Wait Time: 8340
+Average Turnaround Time: 8524
+Average Utilization Time: 99.69041%
+Num Cores: 8
+Quantum: 75
+Average Throughput: 0.07745334
+Average Response Time: 1110
+Average Wait Time: 5231
+Average Turnaround Time: 5415
+Average Utilization Time: 99.44911%

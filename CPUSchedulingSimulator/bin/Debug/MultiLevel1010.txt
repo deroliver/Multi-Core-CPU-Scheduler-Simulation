@@ -22,3 +22,27 @@ Average Response Time: 0
 Average Wait Time: 7488
 Average Turnaround Time: 7690
 Average Utilization Time: 99.07011%
+Num Cores: 6
+Average Throughput: 0.04992511
+Average Response Time: 0
+Average Wait Time: 10929
+Average Turnaround Time: 11109
+Average Utilization Time: 99.58229%
+Num Cores: 8
+Average Throughput: 0.0654279
+Average Response Time: 0
+Average Wait Time: 7488
+Average Turnaround Time: 7690
+Average Utilization Time: 99.07011%
+Num Cores: 10
+Average Throughput: 0.08063865
+Average Response Time: 0
+Average Wait Time: 5276
+Average Turnaround Time: 5479
+Average Utilization Time: 98.79042%
+Num Cores: 12
+Average Throughput: 0.09552011
+Average Response Time: 0
+Average Wait Time: 3825
+Average Turnaround Time: 4018
+Average Utilization Time: 97.9105%
